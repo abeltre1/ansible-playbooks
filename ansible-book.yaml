@@ -11,8 +11,20 @@
       notify:
         - start vim
     - name: directory Maker 
-      file: path=~/src state=directory     
+      file: path=/home/abeltre1/src state=directory  mode=0777   
+     
+    - name: Create test file 
+      file: path=/home/abeltre1/testing.txt state=touch 
 
+    - name: Deleting a directory
+      shell: rm -r /home/abeltre1/src 
+
+
+    - stat: path=/home/abeltre1/testing.txt
+      register: file_path
+
+    - debug: msg="File exists"
+      when: file_path.stat.exists == true  
 
   handlers:
     - name: Start vim
