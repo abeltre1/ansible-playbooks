@@ -1,0 +1,19 @@
+---
+- hosts: all 
+  sudo: yes 
+  tasks:
+    - user: name=abeltre1 comment="abeltre1 root"
+    - name: Set authorized key from URL 
+      authorized_key: user=abeltre1 key="{{ lookup('file','/etc/ansible/files/authorized_keys.abeltre1.pub')}}"
+    
+    - name: Install vim 
+      apt: pkg=vim state=installed update_cache=true
+      notify:
+        - start vim
+    - name: directory Maker 
+      file: path=~/src state=directory     
+
+
+  handlers:
+    - name: Start vim
+      service: name=vim state=started
